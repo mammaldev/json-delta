@@ -59,8 +59,6 @@ describe('JSONChanges', function () {
 
               case 'mergeConflicts':
                 var conflicts = jsonChanges.mergeConflicts(transform.diffs.baseTheirs, transform.diffs.baseYours);
-                //console.log('Expected:', JSON.stringify(conflicts, null, 2));
-                //console.log('Actual:', JSON.stringify(transform.conflicts, null, 2));
                 expect(conflicts).to.deep.have.members(transform.conflicts);
                 break;
             }

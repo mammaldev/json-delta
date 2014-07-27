@@ -240,54 +240,6 @@
           "yours": { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 0, 2, 1 ] }
         }
       ]
-    },
-    {
-      "shoulds": {
-      },
-      "diffs": {
-        "baseTheirs": [
-        ],
-        "baseYours": [
-        ]
-      },
-      "conflicts": [
-      ]
-    },
-    {
-      "shoulds": {
-      },
-      "diffs": {
-        "baseTheirs": [
-        ],
-        "baseYours": [
-        ]
-      },
-      "conflicts": [
-      ]
-    },
-    {
-      "shoulds": {
-      },
-      "diffs": {
-        "baseTheirs": [
-        ],
-        "baseYours": [
-        ]
-      },
-      "conflicts": [
-      ]
-    },
-    {
-      "shoulds": {
-      },
-      "diffs": {
-        "baseTheirs": [
-        ],
-        "baseYours": [
-        ]
-      },
-      "conflicts": [
-      ]
     }
   ]
 }

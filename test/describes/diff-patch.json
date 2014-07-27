@@ -1,0 +1,942 @@
+{
+  "descriptions": [
+    "diff",
+    "patch"
+  ],
+  "transforms": [
+    {
+      "shoulds": {
+        "patch": "throw error if diff item contains bad value for changeType"
+      },
+      "errors": {
+        "patch": true
+      },
+      "bfore": {},
+      "after": {},
+      "diff": [
+        { "path": [], "changeType": "REVOLUTION", "diff": "at the barrel of a gun" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle equal objects",
+        "patch": "handle no-diff object"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "text": "lorem ipsum",
+        "pi": 3.14159,
+        "conspiracy": false,
+        "steps": [
+          "write tests",
+          "fix bugs",
+          { "result": "profit" }
+        ],
+        "lather": {
+          "rinse": {
+            "text": "lorem ipsum",
+            "pi": 3.14159,
+            "conspiracy": false,
+            "steps": [
+              "write tests",
+              "fix bugs",
+              { "result": "profit" }
+            ],
+            "lather": {
+              "rinse": null
+            }
+          }
+        }
+      },
+      "after": {
+        "conspiracy": false,
+        "lather": {
+          "rinse": {
+            "conspiracy": false,
+            "lather": {
+              "rinse": null
+            },
+            "pi": 3.14159,
+            "steps": [
+              "write tests",
+              "fix bugs",
+              { "result": "profit" }
+            ],
+            "text": "lorem ipsum"
+          }
+        },
+        "pi": 3.14159,
+        "steps": [
+          "write tests",
+          "fix bugs",
+          { "result": "profit" }
+        ],
+        "text": "lorem ipsum"
+      },
+      "diff": []
+    },
+    {
+      "shoulds": {
+        "diff": "handle ADD_PROPERTY",
+        "patch": "ADD_PROPERTY"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+      },
+      "after": {
+        "conspiracy": false,
+        "lather": {},
+        "nullified": null,
+        "pi": 3.14159,
+        "steps": [],
+        "text": "lorem ipsum"
+      },
+      "diff": [
+        { "path": [ "conspiracy" ], "changeType": "ADD_PROPERTY", "value": false },
+        { "path": [ "lather" ], "changeType": "ADD_PROPERTY", "value": {} },
+        { "path": [ "nullified" ], "changeType": "ADD_PROPERTY", "value": null },
+        { "path": [ "pi" ], "changeType": "ADD_PROPERTY", "value": 3.14159 },
+        { "path": [ "steps" ], "changeType": "ADD_PROPERTY", "value": [] },
+        { "path": [ "text" ], "changeType": "ADD_PROPERTY", "value": "lorem ipsum" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle DELETE_PROPERTY",
+        "patch": "DELETE_PROPERTY"
+
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "text": "lorem ipsum",
+        "pi": 3.14159,
+        "conspiracy": false,
+        "steps": [],
+        "lather": {},
+        "nullified": null
+      },
+      "after": {
+      },
+      "diff": [
+        { "path": [ "conspiracy" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "lather" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "nullified" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "pi" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "steps" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "text" ], "changeType": "DELETE_PROPERTY" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle UPDATE_PROPERTY",
+        "patch": "UPDATE_PROPERTY"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "text": "De finibus bonorum et malorum",
+        "pi": 3.14286,
+        "conspiracy": true,
+        "steps": null,
+        "lather": null,
+        "nullified": false
+      },
+      "after": {
+        "text": "lorem ipsum",
+        "pi": 3.14159,
+        "conspiracy": false,
+        "steps": [],
+        "lather": {},
+        "nullified": null
+      },
+      "diff": [
+        { "path": [ "conspiracy" ], "changeType": "UPDATE_PROPERTY", "value": false },
+        { "path": [ "lather" ], "changeType": "UPDATE_PROPERTY", "value": {} },
+        { "path": [ "nullified" ], "changeType": "UPDATE_PROPERTY", "value": null },
+        { "path": [ "pi" ], "changeType": "UPDATE_PROPERTY", "value": 3.14159 },
+        { "path": [ "steps" ], "changeType": "UPDATE_PROPERTY", "value": [] },
+        { "path": [ "text" ], "changeType": "UPDATE_PROPERTY", "value": "lorem ipsum" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "recurse",
+        "patch": "recurse"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "lather": {
+          "pi": 3.14159,
+          "conspiracy": false,
+          "rinse": {
+            "pi": 3.14159,
+            "conspiracy": false
+          }
+        }
+      },
+      "after": {
+        "lather": {
+          "text": "lorem ipsum",
+          "conspiracy": true,
+          "rinse": {
+            "text": "lorem ipsum",
+            "conspiracy": true
+          }
+        }
+      },
+      "diff": [
+        { "path": [ "lather", "conspiracy" ], "changeType": "UPDATE_PROPERTY", "value": true },
+        { "path": [ "lather", "pi" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "lather", "rinse", "conspiracy" ], "changeType": "UPDATE_PROPERTY", "value": true },
+        { "path": [ "lather", "rinse", "pi" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ "lather", "rinse", "text" ], "changeType": "ADD_PROPERTY", "value": "lorem ipsum" },
+        { "path": [ "lather", "text" ], "changeType": "ADD_PROPERTY", "value": "lorem ipsum" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle combination of UPDATE_PROPERTY and unchanged properties"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "lather": {
+          "pi": 3.14159,
+          "conspiracy": false
+        }
+      },
+      "after": {
+        "lather": {
+          "pi": 3.14159,
+          "conspiracy": true
+        }
+      },
+      "diff": [
+        { "path": [ "lather", "conspiracy" ], "changeType": "UPDATE_PROPERTY", "value": true }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle identical top-level arrays",
+        "patch": "handle no-diff array"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": {
+        "truth": true,
+        "arr": [
+          {
+            "id": "Bogis",
+            "looks": "fat",
+            "meanness": 100
+          },
+          {
+            "id": "Bunce",
+            "looks": "short",
+            "meanness": 100
+          },
+          {
+            "id": "Bean",
+            "looks": "lean",
+            "meanness": 100
+          }
+        ]
+      },
+      "after": {
+        "truth": false,
+        "arr": [
+          {
+            "id": "Bogis",
+            "meanness": 100,
+            "looks": "fat"
+          },
+          {
+            "id": "Bunce",
+            "meanness": 100,
+            "looks": "short"
+          },
+          {
+            "id": "Bean",
+            "meanness": 100,
+            "looks": "lean"
+          }
+        ]
+      },
+      "diff": [
+        { "path": [ "truth" ], "changeType": "UPDATE_PROPERTY", "value": false }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle identical arrays nested within objects"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        },
+        {
+          "id": "Bunce",
+          "looks": "short",
+          "meanness": 100
+        },
+        {
+          "id": "Bean",
+          "looks": "lean",
+          "meanness": 100
+        }
+      ],
+      "after": [
+        {
+          "id": "Bogis",
+          "meanness": 100,
+          "looks": "fat"
+        },
+        {
+          "id": "Bunce",
+          "meanness": 100,
+          "looks": "short"
+        },
+        {
+          "id": "Bean",
+          "meanness": 100,
+          "looks": "lean"
+        }
+      ],
+      "diff": [
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle INSERT_ITEM",
+        "patch": "INSERT_ITEM"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "b"
+        }
+      ],
+      "after": [
+        {
+          "id": "c"
+        },
+        {
+          "id": "a"
+        },
+        {
+          "id": "d"
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "e"
+        }
+      ],
+      "diff": [
+        { "path": [], "changeType": "INSERT_ITEM", "index": 0, "item": { "id": "c" } },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 2, "item": { "id": "d" } },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 4, "item": { "id": "e" } }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle combination of unchanged array-items & updates to sibling array-item descendents"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        },
+        {
+          "id": "Bunce",
+          "looks": "short",
+          "meanness": 100
+        },
+        {
+          "id": "Bean",
+          "looks": "lean",
+          "meanness": 100
+        }
+      ],
+      "after": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        },
+        {
+          "id": "Bunce",
+          "looks": "tiny",
+          "meanness": 100
+        },
+        {
+          "id": "Bean",
+          "looks": "lean",
+          "meanness": 99
+        }
+      ],
+      "diff": [
+        { "path": [ 1, "looks" ], "changeType": "UPDATE_PROPERTY", "value": "tiny" },
+        { "path": [ 2, "meanness" ], "changeType": "UPDATE_PROPERTY", "value": 99 }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle REMOVE_ITEMS",
+        "patch": "REMOVE_ITEMS"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        { "id": "a" }, { "id": "b" },
+        {
+          "id": "c"
+        },
+        {
+          "id": "d"
+        },
+        {
+          "id": "e"
+        }
+      ],
+      "after": [
+        {
+          "id": "b"
+        },
+        {
+          "id": "d"
+        }
+      ],
+      "diff": [
+        { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2, 4 ] }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle combination of REMOVE_ITEMS and changes to item descendents \t- descendent changes first, their paths pre REMOVE_ITEMS"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "b",
+          "obj": {
+            "key": "value"
+          }
+        },
+        {
+          "id": "c"
+        },
+        {
+          "id": "d",
+          "obj": {
+            "key": "value"
+          }
+        }
+      ],
+      "after": [
+        {
+          "id": "b"
+        },
+        {
+          "id": "d",
+          "obj": {
+            "key": "lock"
+          }
+        }
+      ],
+      "diff": [
+        { "path": [ 1, "obj" ], "changeType": "DELETE_PROPERTY" },
+        { "path": [ 3, "obj", "key" ], "changeType": "UPDATE_PROPERTY", "value": "lock" },
+        { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2 ] }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle combination of REMOVE_ITEMS and INSERT_ITEM changes \t\t- first REMOVE_ITEMS (pre item-addition paths), then INSERT_ITEM changes (post item-removal paths)"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c"
+        },
+        {
+          "id": "d"
+        }
+      ],
+      "after": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "e"
+        },
+        {
+          "id": "f"
+        },
+        {
+          "id": "d"
+        },
+        {
+          "id": "g"
+        }
+      ],
+      "diff": [
+        { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1, 2 ] },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 1, "item": { "id": "e" } },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 2, "item": { "id": "f" } },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 4, "item": { "id": "g" } }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle addition of primitive to array \t\t\t\t\t- classify as update to array (UPDATE_PROPERTY) and *not* INSERT_ITEM",
+        "patch": "handle update to entire doc (array)"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        }
+      ],
+      "after": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        },
+        "Fantastic Mr Fox"
+      ],
+      "diff": [
+        {
+          "path": [],
+          "changeType": "UPDATE_PROPERTY",
+          "value": [
+            {
+              "id": "Bogis",
+              "looks": "fat",
+              "meanness": 100
+            },
+            "Fantastic Mr Fox"
+          ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle removal of primitive from array \t\t\t\t\t- classify as update to array (UPDATE_PROPERTY) and *not* DELETE_PROPERTY"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        },
+        "Fantastic Mr Fox"
+      ],
+      "after": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        }
+      ],
+      "diff": [
+        {
+          "path": [],
+          "changeType": "UPDATE_PROPERTY",
+          "value": [
+            {
+              "id": "Bogis",
+              "looks": "fat",
+              "meanness": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle changes to object on array that also contains primitives \t\t- classify as update to array (UPDATE_PROPERTY)"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        true,
+        {
+          "id": "Bogis"
+        }
+      ],
+      "after": [
+        true,
+        {
+          "id": "Bogis",
+          "drink": "cider"
+        }
+      ],
+      "diff": [
+        {
+          "path": [],
+          "changeType": "UPDATE_PROPERTY",
+          "value": [
+            true,
+            {
+              "id": "Bogis",
+              "drink": "cider"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "match otherwise identical [ before ].{ NO_ID } <-> [ after ].{ HAS-ID }",
+        "patch": "set properties on array-item objects"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {},
+        {
+          "truth": true
+        }
+      ],
+      "after": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "b",
+          "truth": true
+        }
+      ],
+      "diff": [
+        { "path": [ 0, "id" ], "changeType": "ADD_PROPERTY", "value": "a" },
+        { "path": [ 1, "id" ], "changeType": "ADD_PROPERTY", "value": "b" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "also match where additionally before descendent array NO-ID items match with corresponding after descendent array HAS-ID items"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "list": [
+            {
+              "truth": true
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "id": "a",
+          "list": [
+            {
+              "id": "b",
+              "truth": true
+            }
+          ]
+        }
+      ],
+      "diff": [
+        { "path": [ 0, "id" ], "changeType": "ADD_PROPERTY", "value": "a" },
+        { "path": [ 0, "list", 0, "id" ], "changeType": "ADD_PROPERTY", "value": "b" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "match only first otherwise identical [ after ].{ HAS-ID } <->  [ before ].{ NO_ID }"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "truth": true
+        }
+      ],
+      "after": [
+        {
+          "id": "a",
+          "truth": true
+        },
+        {
+          "id": "b",
+          "truth": true
+        }
+      ],
+      "diff": [
+        { "path": [ 0, "id" ], "changeType": "ADD_PROPERTY", "value": "a" },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 1, "item": { "id": "b", "truth": true } }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "*not* match otherwise identical [ after ].{ HAS-ID } <-> [ before ].{ NO_ID } where former shares id with a before item"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "a",
+          "truth": true
+        },
+        {
+          "truth": true
+        },
+        {
+          "id": "b",
+          "truth": true
+        }
+      ],
+      "after": [
+        {
+          "id": "a",
+          "truth": true
+        },
+        {
+          "id": "b",
+          "truth": true
+        }
+      ],
+      "diff": [
+        { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1 ] }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "classify array as updated if before and after arrays both contain NO-ID objects, excluding those in before array been matched with HAS-ID object in after array"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "looks": "fat"
+        },
+        {
+          "looks": "short"
+        }
+      ],
+      "after": [
+        {
+          "id": "Bogis",
+          "looks": "fat"
+        },
+        {
+          "looks": "lean"
+        }
+      ],
+      "diff": [
+        {
+          "path": [],
+          "changeType": "UPDATE_PROPERTY",
+          "value": [
+            {
+              "id": "Bogis",
+              "looks": "fat"
+            },
+            {
+              "looks": "lean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle before array with NO-ID item, after array with identical NO-ID item and otherwsie-identical HAS-ID item"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "truth": true
+        }
+      ],
+      "after": [
+        {
+          "id": "a",
+          "truth": true
+        },
+        {
+          "truth": true
+        }
+      ],
+      "diff": [
+        { "path": [ 0, "id" ], "changeType": "ADD_PROPERTY", "value": "a" },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 1, "item": { "truth": true } }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "set '_id' and 'ref' as the default idKeys when none passed in opts and recognise addition of either to array-item object as an item update"
+      },
+      "opts": null,
+      "bfore": {
+        "arr": [
+          {
+            "id": "not-id",
+            "truthy": true
+          },
+          {
+            "id": "not-id",
+            "truthy": false
+          }
+        ]
+      },
+      "after": {
+        "arr": [
+          {
+            "_id": "a",
+            "id": "not-id",
+            "truthy": true
+          },
+          {
+            "ref": "b",
+            "id": "not-id",
+            "truthy": false
+          }
+        ]
+      },
+      "diff": [
+        { "path": [ "arr", 0, "_id" ], "changeType": "ADD_PROPERTY", "value": "a" },
+        { "path": [ "arr", 1, "ref" ], "changeType": "ADD_PROPERTY", "value": "b" }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "handle REORDER_ITEMS",
+        "patch": "REORDER_ITEMS"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis"
+        },
+        {
+          "id": "Bunce"
+        },
+        {
+          "id": "Bean"
+        }
+      ],
+      "after": [
+        {
+          "id": "Bean"
+        },
+        {
+          "id": "Bunce"
+        },
+        {
+          "id": "Bogis"
+        }
+      ],
+      "diff": [
+        {
+          "path": [],
+          "changeType": "REORDER_ITEMS",
+          "reordering": [ 2, 1, 0 ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "diff": "on single array first REMOVE_ITEM, then REORDER_ITEMS, then INSERT_ITEM",
+        "patch": "REMOVE_ITEM, REORDER_ITEMS, and INSERT_ITEM to array"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "bfore": [
+        {
+          "id": "Bogis"
+        },
+        {
+          "id": "Bunce"
+        },
+        {
+          "id": "Bean"
+        },
+        {
+          "id": "Weasel"
+        }
+      ],
+      "after": [
+        {
+          "id": "Bean"
+        },
+        {
+          "id": "Fantastic Mr Fox"
+        },
+        {
+          "id": "Bogis"
+        },
+        {
+          "id": "Weasel"
+        }
+      ],
+      "diff": [
+        { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1 ] },
+        { "path": [], "changeType": "REORDER_ITEMS", "reordering": [ 1, 0, 2 ] },
+        { "path": [], "changeType": "INSERT_ITEM", "index": 1, "item": { "id": "Fantastic Mr Fox" } }
+      ]
+    }
+  ]
+}

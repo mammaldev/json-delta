@@ -1,0 +1,293 @@
+{
+  "descriptions": [
+    "mergeConflicts"
+  ],
+  "transforms": [
+    {
+      "shoulds": {
+        "mergeConflicts": "return no conflicts when yours and theirs add, remove and update mutually exclusive properties"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "DELETE_PROPERTY" },
+          { "path": [ "bool" ], "changeType": "UPDATE_PROPERTY", "value": false },
+          { "path": [ "obj", "y" ], "changeType": "ADD_PROPERTY", "value": true }
+        ]
+      },
+      "conflicts": [],
+      "base": {
+        "arr": [],
+        "bool": true,
+        "num": 0,
+        "obj": {},
+        "str": "ing"
+      },
+      "theirs": {
+        "arr": [],
+        "bool": true,
+        "num": 1,
+        "obj": {
+          "theirs": true
+        }
+      },
+      "yours": {
+        "bool": false,
+        "num": 0,
+        "obj": {
+          "yours": true
+        },
+        "str": "ing"
+      }
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "return no conflicts when yours and theirs make identical edits to properties"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ],
+        "baseYours": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ]
+      },
+      "conflicts": []
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "identify different (non-array-item) changes to same property as conflicts"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          { "path": [ "str" ], "changeType": "UPDATE_PROPERTY", "value": "ing" }
+        ],
+        "baseYours": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 2 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": false },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ]
+      },
+      "conflicts": [
+        {
+          "theirs": { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          "yours": { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 2 }
+        },
+        {
+          "theirs": { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          "yours": { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": false }
+        },
+        {
+          "theirs": { "path": [ "str" ], "changeType": "UPDATE_PROPERTY", "value": "ing" },
+          "yours": { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "identify deletion of P and changes to P's descendents as conflicting"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "obj1" ], "changeType": "DELETE_PROPERTY" },
+          { "path": [ "obj2", "arr", 0, "key" ], "changeType": "DELETE_PROPERTY" },
+          { "path": [ "obj2", "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] },
+          { "path": [ "obj2", "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 2, 1, 0 ] },
+          { "path": [ "obj2", "arr" ], "changeType": "INSERT_ITEM", "index": 0, "item": {} }
+        ],
+        "baseYours": [
+          { "path": [ "obj1", "key1" ], "changeType": "ADD_PROPERTY", "value": "value" },
+          { "path": [ "obj1", "key2" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
+        ]
+      },
+      "conflicts": [
+        {
+          "theirs": { "path": [ "obj1" ], "changeType": "DELETE_PROPERTY" },
+          "yours": { "path": [ "obj1", "key1" ], "changeType": "ADD_PROPERTY", "value": "value" }
+        },
+        {
+          "theirs": { "path": [ "obj1" ], "changeType": "DELETE_PROPERTY" },
+          "yours": { "path": [ "obj1", "key2" ], "changeType": "UPDATE_PROPERTY", "value": "value" }
+        },
+        {
+          "theirs": { "path": [ "obj2", "arr", 0, "key" ], "changeType": "DELETE_PROPERTY" },
+          "yours": { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
+        },
+        {
+          "theirs": { "path": [ "obj2", "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] },
+          "yours": { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
+        },
+        {
+          "theirs": { "path": [ "obj2", "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 2, 1, 0 ] },
+          "yours": { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
+        },
+        {
+          "theirs": { "path": [ "obj2", "arr" ], "changeType": "INSERT_ITEM", "index": 0, "item": {} },
+          "yours": { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "identify array-item removal and changes to descendents of array-item as conflicting..."
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr1" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] },
+          { "path": [ "arr2", 0, "key" ], "changeType": "ADD_PROPERTY", "value": true }
+        ],
+        "baseYours": [
+          { "path": [ "arr1", 0, "key" ], "changeType": "UPDATE_PROPERTY", "value": false },
+          { "path": [ "arr2" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2 ] }
+        ]
+      },
+      "conflicts": [
+        {
+            "theirs": { "path": [ "arr1" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] },
+            "yours": { "path": [ "arr1", 0, "key" ], "changeType": "UPDATE_PROPERTY", "value": false }
+        },
+        {
+            "theirs": { "path": [ "arr2", 0, "key" ], "changeType": "ADD_PROPERTY", "value": true },
+            "yours": { "path": [ "arr2" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2 ] }
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "... except for addition of id to array-item"
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr", 0, "id" ], "changeType": "ADD_PROPERTY", "value": "unique" }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] }
+        ]
+      },
+      "conflicts": []
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "identify insertions of items to same array in theirs and yours as a conflict"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 0 ], "value": { "ok": true } },
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 1 ], "value": { "ok": false } }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 0 ], "value": { "ok": true } }
+        ]
+      },
+      "conflicts": [
+        {
+          "theirs": [
+            { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 0 ], "value": { "ok": true } },
+            { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 1 ], "value": { "ok": false } }
+          ],
+          "yours": [
+            { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 0 ], "value": { "ok": true } }
+          ]
+        }
+      ]
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "permit reorderings on both diffs where the reorderings differ only because of items removed from one diff's array but not the other"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 0, 3, 1, 2 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 3 ] },
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 2, 0, 1 ] }
+        ]
+      },
+      "conflicts": [
+      ]
+    },
+    {
+      "shoulds": {
+        "mergeConflicts": "identify reordering conflicts accompanied by item removals"
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 0, 3, 1, 2 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 3 ] },
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 0, 2, 1 ] }
+        ]
+      },
+      "conflicts": [
+        {
+          "theirs": { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 0, 3, 1, 2 ] },
+          "yours": { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 0, 2, 1 ] }
+        }
+      ]
+    },
+    {
+      "shoulds": {
+      },
+      "diffs": {
+        "baseTheirs": [
+        ],
+        "baseYours": [
+        ]
+      },
+      "conflicts": [
+      ]
+    },
+    {
+      "shoulds": {
+      },
+      "diffs": {
+        "baseTheirs": [
+        ],
+        "baseYours": [
+        ]
+      },
+      "conflicts": [
+      ]
+    },
+    {
+      "shoulds": {
+      },
+      "diffs": {
+        "baseTheirs": [
+        ],
+        "baseYours": [
+        ]
+      },
+      "conflicts": [
+      ]
+    },
+    {
+      "shoulds": {
+      },
+      "diffs": {
+        "baseTheirs": [
+        ],
+        "baseYours": [
+        ]
+      },
+      "conflicts": [
+      ]
+    }
+  ]
+}

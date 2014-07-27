@@ -1,6 +1,6 @@
 {
   "author": "",
-  "name": "json-changes",
+  "name": "json-delta",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",

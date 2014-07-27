@@ -3,9 +3,9 @@ var diff = require('./lib/diff');
 var patch = require('./lib/patch');
 var merge = require('./lib/merge');
 
-module.exports = JSONChanges;
+module.exports = Delta;
 
-function JSONChanges( opts ) {
+function Delta( opts ) {
   opts = opts || {};
   this.idKeys = Array.isArray(opts.idKeys) ? opts.idKeys : [ '_id', 'ref' ];
 
@@ -20,6 +20,6 @@ function JSONChanges( opts ) {
   });
 }
 
-JSONChanges.prototype.diff = diff;
-JSONChanges.prototype.patch = patch;
-JSONChanges.prototype.mergeConflicts = merge;
+Delta.prototype.diff = diff;
+Delta.prototype.patch = patch;
+Delta.prototype.mergeConflicts = merge;

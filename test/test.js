@@ -57,9 +57,9 @@ describe('JSONChanges', function () {
                 }
                 break;
 
-              case 'mergeConflicts':
-                var conflicts = jsonChanges.mergeConflicts(transform.diffs.baseTheirs, transform.diffs.baseYours);
-                expect(conflicts).to.deep.have.members(transform.conflicts);
+              case 'mergePatch':
+                var result = jsonChanges.mergePatch(transform.diffs.baseTheirs, transform.diffs.baseYours);
+                expect(result.conflicts).to.deep.have.members(transform.result.conflicts);
                 break;
             }
           });

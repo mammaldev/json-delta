@@ -172,7 +172,8 @@
       },
       "diffs": {
         "baseTheirs": [
-          { "path": [ "arr", 0, "id" ], "changeType": "ADD_PROPERTY", "value": "unique" }
+          { "path": [ "arr", 0, "id" ], "changeType": "ADD_PROPERTY", "value": "unique1" },
+          { "path": [ "arr", 0, "arr", 0, "id" ], "changeType": "ADD_PROPERTY", "value": "unique2" }
         ],
         "baseYours": [
           { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] }

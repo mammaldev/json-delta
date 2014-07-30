@@ -22,4 +22,4 @@ function Delta( opts ) {
 
 Delta.prototype.diff = diff;
 Delta.prototype.patch = patch;
-Delta.prototype.mergeConflicts = merge;
+Delta.prototype.mergePatch = merge;

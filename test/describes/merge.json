@@ -265,8 +265,8 @@
         ]
       },
       "result": {
-        "success": true,
-        "patch": [],
+        "success": false,
+        "patch": null,
         "conflicts": [
           {
             "theirs": { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 0, 3, 1, 2 ] },

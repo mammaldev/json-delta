@@ -556,7 +556,7 @@
       }
     },
     {
-      "description": "Array changes on theirs incorrectly ordered to test 'unstable' sort algo - https://es5.github.io/#x15.4.4.11",
+      "description": "Array changes supplied out-of-order to test correct ordering of output in presence of 'unstable' sort algo - https://es5.github.io/#x15.4.4.11",
       "methods": {
         "mergePatch": {
           "it": {

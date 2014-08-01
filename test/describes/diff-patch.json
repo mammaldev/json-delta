@@ -1,31 +1,31 @@
 {
-  "descriptions": [
-    "diff",
-    "patch"
-  ],
+  "methods": [ "diff", "patch" ],
   "transforms": [
     {
-      "shoulds": {
-        "patch": "throw error if diff item contains bad value for changeType"
+      "description": "Bad value for changeType in change",
+      "methods": {
+        "patch": {
+          "error": true
+        }
       },
-      "errors": {
-        "patch": true
-      },
-      "bfore": {},
+      "before": {},
       "after": {},
       "diff": [
         { "path": [], "changeType": "REVOLUTION", "diff": "at the barrel of a gun" }
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle equal objects",
-        "patch": "handle no-diff object"
+      "description": "No change",
+      "methods": {
+        "diff": {
+          "it": "returns empty array"
+        },
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "text": "lorem ipsum",
         "pi": 3.14159,
         "conspiracy": false,
@@ -78,14 +78,15 @@
       "diff": []
     },
     {
-      "shoulds": {
-        "diff": "handle ADD_PROPERTY",
-        "patch": "ADD_PROPERTY"
+      "description": "ADD_PROPERTY",
+      "methods": {
+        "diff": {},
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
       },
       "after": {
         "conspiracy": false,
@@ -105,15 +106,15 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle DELETE_PROPERTY",
-        "patch": "DELETE_PROPERTY"
-
+      "description": "DELETE_PROPERTY",
+      "methods": {
+        "diff": {},
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "text": "lorem ipsum",
         "pi": 3.14159,
         "conspiracy": false,
@@ -133,14 +134,15 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle UPDATE_PROPERTY",
-        "patch": "UPDATE_PROPERTY"
+      "description": "UPDATE_PROPERTY",
+      "methods": {
+        "diff": {},
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "text": "De finibus bonorum et malorum",
         "pi": 3.14286,
         "conspiracy": true,
@@ -166,14 +168,17 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "recurse",
-        "patch": "recurse"
+      "description": "Nested properties",
+      "methods": {
+        "diff": {
+          "it": "recurses"
+        },
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "lather": {
           "pi": 3.14159,
           "conspiracy": false,
@@ -203,13 +208,14 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle combination of UPDATE_PROPERTY and unchanged properties"
+      "description": "Combination of updated & unchanged properties",
+      "methods": {
+        "diff": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "lather": {
           "pi": 3.14159,
           "conspiracy": false
@@ -226,14 +232,14 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle identical top-level arrays",
-        "patch": "handle no-diff array"
+      "description": "Unchanged top-level array / changed sibling property",
+      "methods": {
+        "diff": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": {
+      "before": {
         "truth": true,
         "arr": [
           {
@@ -278,81 +284,110 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle identical arrays nested within objects"
+      "description": "Doc itself (top-level array) updated",
+      "methods": {
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
+        {
+          "id": "Bogis",
+          "looks": "fat",
+          "meanness": 100
+        }
+      ],
+      "after": [
         {
           "id": "Bogis",
           "looks": "fat",
           "meanness": 100
         },
-        {
-          "id": "Bunce",
-          "looks": "short",
-          "meanness": 100
-        },
-        {
-          "id": "Bean",
-          "looks": "lean",
-          "meanness": 100
-        }
-      ],
-      "after": [
-        {
-          "id": "Bogis",
-          "meanness": 100,
-          "looks": "fat"
-        },
-        {
-          "id": "Bunce",
-          "meanness": 100,
-          "looks": "short"
-        },
-        {
-          "id": "Bean",
-          "meanness": 100,
-          "looks": "lean"
-        }
+        "Fantastic Mr Fox"
       ],
       "diff": [
+        {
+          "path": [],
+          "changeType": "UPDATE_PROPERTY",
+          "value": [
+            {
+              "id": "Bogis",
+              "looks": "fat",
+              "meanness": 100
+            },
+            "Fantastic Mr Fox"
+          ]
+        }
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle INSERT_ITEM",
-        "patch": "INSERT_ITEM"
+      "description": "Unchanged arrays nested within objects",
+      "methods": {
+        "diff": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
-        {
-          "id": "a"
-        },
-        {
-          "id": "b"
-        }
+      "before": {
+        "farmers": [
+          {
+            "id": "Bogis",
+            "looks": "fat",
+            "meanness": 100
+          },
+          {
+            "id": "Bunce",
+            "looks": "short",
+            "meanness": 100
+          },
+          {
+            "id": "Bean",
+            "looks": "lean",
+            "meanness": 100
+          }
+        ]
+      },
+      "after": {
+        "farmers": [
+          {
+            "id": "Bogis",
+            "looks": "fat",
+            "meanness": 100
+          },
+          {
+            "id": "Bunce",
+            "looks": "short",
+            "meanness": 100
+          },
+          {
+            "id": "Bean",
+            "looks": "lean",
+            "meanness": 100
+          }
+        ]
+      },
+      "diff": []
+    },
+    {
+      "description": "Objects inserted in to array",
+      "methods": {
+        "diff": {},
+        "patch": {}
+      },
+      "opts": {
+        "idKeys": [ "id" ]
+      },
+      "before": [
+        { "id": "a" },
+        { "id": "b" }
       ],
       "after": [
-        {
-          "id": "c"
-        },
-        {
-          "id": "a"
-        },
-        {
-          "id": "d"
-        },
-        {
-          "id": "b"
-        },
-        {
-          "id": "e"
-        }
+        { "id": "c" },
+        { "id": "a" },
+        { "id": "d" },
+        { "id": "b" },
+        { "id": "e" }
       ],
       "diff": [
         { "path": [], "changeType": "INSERT_ITEM", "index": 0, "item": { "id": "c" } },
@@ -361,13 +396,14 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle combination of unchanged array-items & updates to sibling array-item descendents"
+      "description": "Array with some items unchanged, and some items with updated properties",
+      "methods": {
+        "diff": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "id": "Bogis",
           "looks": "fat",
@@ -407,45 +443,39 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle REMOVE_ITEMS",
-        "patch": "REMOVE_ITEMS"
+      "description": "Items removed from array",
+      "methods": {
+        "diff": {},
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         { "id": "a" }, { "id": "b" },
-        {
-          "id": "c"
-        },
-        {
-          "id": "d"
-        },
-        {
-          "id": "e"
-        }
+        { "id": "c" },
+        { "id": "d" },
+        { "id": "e" }
       ],
       "after": [
-        {
-          "id": "b"
-        },
-        {
-          "id": "d"
-        }
+        { "id": "b" },
+        { "id": "d" }
       ],
       "diff": [
         { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2, 4 ] }
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle combination of REMOVE_ITEMS and changes to item descendents \t- descendent changes first, their paths pre REMOVE_ITEMS"
+      "description": "Items removed from array, descendent properties of other items changed",
+      "methods": {
+        "diff": {
+          "it": "lists changes to descendent properties first with their pre-array-item-removal paths"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "id": "a"
         },
@@ -483,42 +513,27 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle combination of REMOVE_ITEMS and INSERT_ITEM changes \t\t- first REMOVE_ITEMS (pre item-addition paths), then INSERT_ITEM changes (post item-removal paths)"
+      "description": "Items both removed from and inserted into array",
+      "methods": {
+        "diff": {
+          "it": "lists REMOVE_ITEMS change first, with pre-insertion indices. Then item insertions with post-removal indices"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
-        {
-          "id": "a"
-        },
-        {
-          "id": "b"
-        },
-        {
-          "id": "c"
-        },
-        {
-          "id": "d"
-        }
+      "before": [
+        { "id": "a" },
+        { "id": "b" },
+        { "id": "c" },
+        { "id": "d" }
       ],
       "after": [
-        {
-          "id": "a"
-        },
-        {
-          "id": "e"
-        },
-        {
-          "id": "f"
-        },
-        {
-          "id": "d"
-        },
-        {
-          "id": "g"
-        }
+        { "id": "a" },
+        { "id": "e" },
+        { "id": "f" },
+        { "id": "d" },
+        { "id": "g" }
       ],
       "diff": [
         { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1, 2 ] },
@@ -528,14 +543,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle addition of primitive to array \t\t\t\t\t- classify as update to array (UPDATE_PROPERTY) and *not* INSERT_ITEM",
-        "patch": "handle update to entire doc (array)"
+      "description": "Primitive inserted into array",
+      "methods": {
+        "diff": {
+          "it": "classifies change as update to the array (UPDATE_PROPERTY) and *not* INSERT_ITEM"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "id": "Bogis",
           "looks": "fat",
@@ -566,13 +583,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle removal of primitive from array \t\t\t\t\t- classify as update to array (UPDATE_PROPERTY) and *not* DELETE_PROPERTY"
+      "description": "Primitive removed from array",
+      "methods": {
+        "diff": {
+          "it": "classifies change as update to to array (UPDATE_PROPERTY)"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "id": "Bogis",
           "looks": "fat",
@@ -602,13 +622,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle changes to object on array that also contains primitives \t\t- classify as update to array (UPDATE_PROPERTY)"
+      "description": "Changes to object-items on array that also has primitive item",
+      "methods": {
+        "diff": {
+          "it": "returns a single update change for the array itself"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         true,
         {
           "id": "Bogis"
@@ -636,23 +659,22 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "match otherwise identical [ before ].{ NO_ID } <-> [ after ].{ HAS-ID }",
-        "patch": "set properties on array-item objects"
+      "description": "Id properties added to array-item objects",
+      "methods": {
+        "diff": {
+          "it": "pairs no-id items on before array with otherwise identical items on after array"
+        },
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {},
-        {
-          "truth": true
-        }
+        { "truth": true }
       ],
       "after": [
-        {
-          "id": "a"
-        },
+        { "id": "a" },
         {
           "id": "b",
           "truth": true
@@ -664,13 +686,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "also match where additionally before descendent array NO-ID items match with corresponding after descendent array HAS-ID items"
+      "description": "Id properties added to array item and one of its descendent array items",
+      "methods": {
+        "diff": {
+          "it": "returns diff containing two corresponding ADD_PROPERTY changes"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "list": [
             {
@@ -696,13 +721,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "match only first otherwise identical [ after ].{ HAS-ID } <->  [ before ].{ NO_ID }"
+      "description": "Before: array containing single id-less object. after: array containing two id'd objects otherwise identical to before array item",
+      "methods": {
+        "diff": {
+          "it": "pairs before item with first after item. Two changes: ADD_PROPERTY and INSERT_ITEM"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "truth": true
         }
@@ -723,13 +751,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "*not* match otherwise identical [ after ].{ HAS-ID } <-> [ before ].{ NO_ID } where former shares id with a before item"
+      "description": "All array items identical but for ids. Before array contains 3 items, two with ids. After array contains the two id-having items",
+      "methods": {
+        "diff": {
+          "it": "does not pair no-id item on before with either item on after - i.e. one REMOVE_ITEMS change"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "id": "a",
           "truth": true
@@ -757,13 +788,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "classify array as updated if before and after arrays both contain NO-ID objects, excluding those in before array been matched with HAS-ID object in after array"
+      "description": "Before and After arrays contain id-less items not identical to each other",
+      "methods": {
+        "diff": {
+          "it": "classifes array as updated"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "looks": "fat"
         },
@@ -797,13 +831,16 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle before array with NO-ID item, after array with identical NO-ID item and otherwsie-identical HAS-ID item"
+      "description": "All array items identical except for ids. Before array contains item without id. After contains item with id and item with no id.",
+      "methods": {
+        "diff": {
+          "it": "pairs before array item with id-having item on after. Two changes: ADD_PROPERTY for id, INSERT_ITEM for no-id item on after"
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
+      "before": [
         {
           "truth": true
         }
@@ -823,11 +860,14 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "set '_id' and 'ref' as the default idKeys when none passed in opts and recognise addition of either to array-item object as an item update"
+      "description": "(idKeys not specified in constructor options.) 2 items on before array have 'id' property and are otherwise identical with items on after that have respectively '_id' and 'ref' properties",
+      "methods": {
+        "diff": {
+          "it": "uses default idKeys - '_id' and 'ref' and thus pairs items on before with items on after."
+        }
       },
       "opts": null,
-      "bfore": {
+      "before": {
         "arr": [
           {
             "id": "not-id",
@@ -859,34 +899,23 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "handle REORDER_ITEMS",
-        "patch": "REORDER_ITEMS"
+      "description": "Array items reordered",
+      "methods": {
+        "diff": {},
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
-        {
-          "id": "Bogis"
-        },
-        {
-          "id": "Bunce"
-        },
-        {
-          "id": "Bean"
-        }
+      "before": [
+        { "id": "Bogis" },
+        { "id": "Bunce" },
+        { "id": "Bean" }
       ],
       "after": [
-        {
-          "id": "Bean"
-        },
-        {
-          "id": "Bunce"
-        },
-        {
-          "id": "Bogis"
-        }
+        { "id": "Bean" },
+        { "id": "Bunce" },
+        { "id": "Bogis" }
       ],
       "diff": [
         {
@@ -897,40 +926,27 @@
       ]
     },
     {
-      "shoulds": {
-        "diff": "on single array first REMOVE_ITEM, then REORDER_ITEMS, then INSERT_ITEM",
-        "patch": "REMOVE_ITEM, REORDER_ITEMS, and INSERT_ITEM to array"
+      "description": "Array with items removed, inserted, reordered",
+      "methods": {
+        "diff": {
+          "it": "on single array first REMOVE_ITEM, then REORDER_ITEMS, then INSERT_ITEM",
+          "patch": {}
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
       },
-      "bfore": [
-        {
-          "id": "Bogis"
-        },
-        {
-          "id": "Bunce"
-        },
-        {
-          "id": "Bean"
-        },
-        {
-          "id": "Weasel"
-        }
+      "before": [
+        { "id": "Bogis" },
+        { "id": "Bunce" },
+        { "id": "Bean" },
+        { "id": "Weasel" }
       ],
       "after": [
-        {
-          "id": "Bean"
-        },
-        {
-          "id": "Fantastic Mr Fox"
-        },
-        {
-          "id": "Bogis"
-        },
-        {
-          "id": "Weasel"
-        }
+        { "id": "Bean" },
+        { "id": "Fantastic Mr Fox" },
+        { "id": "Bogis" },
+        { "id": "Weasel" }
       ],
       "diff": [
         { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1 ] },

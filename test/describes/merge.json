@@ -1,11 +1,16 @@
 {
-  "descriptions": [
+  "methods": [
     "mergePatch"
   ],
   "transforms": [
     {
-      "shoulds": {
-        "mergePatch": "return no conflicts when yours and theirs add, remove and update mutually exclusive properties"
+      "description": "[ADD|UPDATE|DELETE]_PROPERTY changes to mutually exclusive set of properties",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "deep equal theirs"
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -19,15 +24,24 @@
           { "path": [ "obj", "y" ], "changeType": "ADD_PROPERTY", "value": true }
         ]
       },
-      "result": {
+      "expectation": {
         "success": true,
-        "patch": [],
+        "patch": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": true },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ],
         "conflicts": []
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "return no conflicts when yours and theirs make identical edits to properties"
+      "description": "Identical changes on theirs and yours",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "empty array"
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -41,15 +55,19 @@
           { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
         ]
       },
-      "result": {
+      "expectation": {
         "success": true,
         "patch": [],
         "conflicts": []
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "identify different (non-array-item) changes to same property as conflicts"
+      "description": "Conflicting [ADD|UPDATE|DELETE]_PROPERTY changes",
+      "methods": {
+        "mergePatch": {
+          "it": {
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -63,7 +81,7 @@
           { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
         ]
       },
-      "result": {
+      "expectation": {
         "success": false,
         "patch": null,
         "conflicts": [
@@ -83,8 +101,49 @@
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "identify deletion of P and changes to P's descendents as conflicting"
+      "description": "Conflicting, non-conflicting & identical [ADD|UPDATE|DELETE]_PROPERTY changes",
+      "methods": {
+        "mergePatch": {
+          "it": {
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "key" ], "changeType": "ADD_PROPERTY", "value": 1 },
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": false },
+          { "path": [ "str" ], "changeType": "UPDATE_PROPERTY", "value": "ing" }
+        ],
+        "baseYours": [
+          { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 2 },
+          { "path": [ "obj", "t" ], "changeType": "ADD_PROPERTY", "value": false },
+          { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+        ]
+      },
+      "expectation": {
+        "success": false,
+        "patch": null,
+        "conflicts": [
+          {
+            "theirs": { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 1 },
+            "yours": { "path": [ "num" ], "changeType": "UPDATE_PROPERTY", "value": 2 }
+          },
+          {
+            "theirs": { "path": [ "str" ], "changeType": "UPDATE_PROPERTY", "value": "ing" },
+            "yours": { "path": [ "str" ], "changeType": "DELETE_PROPERTY" }
+          }
+        ]
+      }
+    },
+    {
+      "description": "One diff deletes property P, the other makes changes (not add id property) to P's descendents",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "conflicts": "Yes - deleting a property conflicts with changes to its descendents, except where those changes are adding an id to an array item object"
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -100,7 +159,7 @@
           { "path": [ "obj2" ], "changeType": "DELETE_PROPERTY" }
         ]
       },
-      "result": {
+      "expectation": {
         "success": false,
         "patch": null,
         "conflicts": [
@@ -132,8 +191,13 @@
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "...except for addition of id to descendent array-item"
+      "description": "One diff deletes property P, the other adds id property to descendents of P",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "conflicts": "No conflict - adding ids is an exceptional case"
+          }
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
@@ -146,15 +210,20 @@
           { "path": [ "obj" ], "changeType": "DELETE_PROPERTY" }
         ]
       },
-      "result": {
+      "expectation": {
         "success": true,
         "patch": [],
         "conflicts": []
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "identify array-item removal and changes to descendents of array-item as conflicting..."
+      "description": "One diff removes array-item I, the other makes changes (not add id property) to I's descendents",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "conflicts": "Array-item removal conflicts with changes to item's descendents, except where those changes are adding id property to an array item object"
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -166,7 +235,7 @@
           { "path": [ "arr2" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 2 ] }
         ]
       },
-      "result": {
+      "expectation": {
         "success": false,
         "patch": null,
         "conflicts": [
@@ -182,8 +251,13 @@
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "... except for addition of id to array-item"
+      "description": "One diff removes array-item I, the other adds id property to descendents of I",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "conflicts": "No conflict - adding ids is an exceptional case"
+          }
+        }
       },
       "opts": {
         "idKeys": [ "id" ]
@@ -197,15 +271,19 @@
           { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] }
         ]
       },
-      "result": {
+      "expectation": {
         "success": true,
         "patch": [],
         "conflicts": []
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "identify insertions of items to same array in theirs and yours as a conflict"
+      "description": "Items added to array A on both diffs",
+      "methods": {
+        "mergePatch": {
+          "it": {
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -216,7 +294,7 @@
           { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": [ 0 ], "value": { "ok": true } }
         ]
       },
-      "result": {
+      "expectation": {
         "success": false,
         "patch": null,
         "conflicts": [
@@ -233,8 +311,12 @@
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "permit reorderings on both diffs where the reorderings differ only because of items removed from one diff's array but not the other"
+      "description": "Array A reordered on both diffs. Items also removed from A on one diff. Same order after item removals",
+      "methods": {
+        "mergePatch": {
+          "it": {
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -245,15 +327,20 @@
           { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 2, 0, 1 ] }
         ]
       },
-      "result": {
+      "expectation": {
         "success": true,
         "patch": [],
         "conflicts": []
       }
     },
     {
-      "shoulds": {
-        "mergePatch": "identify reordering conflicts accompanied by item removals"
+      "description": "Array A reordered on both diffs. Items also removed from A on one diff. Different order.",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "conflicts": "For now this is classified as a conflict. It perhaps shouldn't be."
+          }
+        }
       },
       "diffs": {
         "baseTheirs": [
@@ -264,7 +351,7 @@
           { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 0, 2, 1 ] }
         ]
       },
-      "result": {
+      "expectation": {
         "success": false,
         "patch": null,
         "conflicts": [

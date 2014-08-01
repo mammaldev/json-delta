@@ -29,37 +29,67 @@ describe('Delta instances', function () {
     return JSON.parse(fs.readFileSync(__dirname + '/describes/' + filename));
   })
   .forEach(function ( doc ) {
-    doc.descriptions.forEach(function ( behaviour ) {
+    doc.methods.forEach(function ( method ) {
 
-      describe(behaviour, function () {
+      describe(method, function () {
 
         doc.transforms.filter(function( transform ) {
-          return transform.shoulds && transform.shoulds[ behaviour ];
+          return transform.methods && transform.methods[ method ];
         })
-        .forEach(function ( transform ) {
-          var should = transform.shoulds[ behaviour ];
+        .forEach(function ( transform, i ) {
+          var delta = new Delta(transform.opts);
 
+          describe(transform.description, function () {
+            var expectError = transform.methods[ method ].error;
+            var itDesc = transform.methods[ method ].it;
+            var result;
 
-          it('should ' + should, function() {
-            switch ( behaviour ) {
-
+            switch ( method ) {
               case 'diff':
-                expect(delta.diff(transform.bfore, transform.after)).to.eql(transform.diff);
+                it(itDesc || 'returns expected diff', function () {
+                  expect(delta.diff(transform.before, transform.after)).to.eql(transform.diff);
+                });
                 break;
 
               case 'patch':
-                var patch = delta.patch.bind(delta, transform.bfore, transform.diff);
+                var patch = delta.patch.bind(delta, transform.before, transform.diff);
 
-                if ( transform.errors && transform.errors.patch ) {
-                  expect(patch).to.throw(Error);
-                } else {
-                  expect(patch()).to.eql(transform.after);
-                }
+                it(itDesc || ( expectError ? 'should throw error' : 'applies patch and returns object equal to after' ), function () {
+                  if ( expectError ) {
+                    expect(patch).to.throw(Error);
+                  } else {
+                    expect(patch()).to.eql(transform.after);
+                  }
+                });
                 break;
 
               case 'mergePatch':
-                var result = delta.mergePatch(transform.diffs.baseTheirs, transform.diffs.baseYours);
-                expect(result.conflicts).to.deep.have.members(transform.result.conflicts);
+                var expectation = transform.expectation;
+                result = delta.mergePatch(transform.diffs.baseTheirs, transform.diffs.baseYours);
+
+                it('returns object with properties "success" - boolean, "conflicts" - array (set), "patch" - array or null', function () {
+                  expect(result).to.be.an('object');
+                  expect(Object.keys(result)).to.have.members([ 'success', 'conflicts', 'patch' ]);
+                  expect(result.success).to.be.a('boolean');
+                  expect(result.conflicts).to.be.an('array');
+                  expect(Array.isArray(result.patch) || result.patch === null);
+                });
+
+                it('success: ' + expectation.success, function () {
+                  expect(result.success).to.equal(expectation.success);
+                });
+
+                it('conflicts: ' + ( itDesc.conflicts || ( expectation.conflicts.length ? 'expected set of conflicts' : 'empty array' )), function () {
+                  expect(result.conflicts).to.deep.have.members(expectation.conflicts);
+                });
+
+                it('patch: ' + ( itDesc.patch || ( expectation.patch ? 'expected patch' : 'null' )), function () {
+                  if ( expectation.patch ) {
+                    expect(result.patch).to.eql(expectation.patch);
+                  } else {
+                    expect(result.patch).to.equal(null);
+                  }
+                });
                 break;
             }
           });

@@ -80,11 +80,11 @@ describe('Delta instances', function () {
                   expect(result.success).to.equal(expectation.success);
                 });
 
-                it('conflicts: ' + ( itDesc.conflicts || ( expectation.conflicts.length ? 'expected set of conflicts' : 'empty array' )), function () {
+                it('conflicts: ' + ( itDesc.conflicts || ( expectation.conflicts.length ? 'expected set of conflicts' : 'empty array' ) ), function () {
                   expect(result.conflicts).to.deep.have.members(expectation.conflicts);
                 });
 
-                it('patch: ' + ( itDesc.patch || ( expectation.patch ? 'expected patch' : 'null' )), function () {
+                it('patch: ' + ( itDesc.patch || ( expectation.patch ? 'expected patch' : 'null' ) ), function () {
                   if ( expectation.patch ) {
                     expect(result.patch).to.eql(expectation.patch);
                   } else {

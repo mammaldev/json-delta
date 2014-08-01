@@ -1,22 +1,22 @@
 var fs = require('fs');
 var expect = require('chai').expect;
-var JSONChanges = require('..');
+var Delta = require('..');
 
 setTimeout(function() {
   process.exit(1);
 }, 2000);
 
-describe('JSONChanges', function () {
+describe('Delta instances', function () {
 
   describe('CHANGE_TYPES', function () {
-    var jsonChanges = new JSONChanges();
+    var delta = new Delta();
 
     it('should be exposed on JSONChanges instances', function () {
-      expect(jsonChanges.CHANGE_TYPES).to.be.an('object');
+      expect(delta.CHANGE_TYPES).to.be.an('object');
     });
 
     it('should be read-only', function () {
-      expect(jsonChanges.CHANGE_TYPES).to.not.equal(jsonChanges.CHANGE_TYPES);
+      expect(delta.CHANGE_TYPES).to.not.equal(delta.CHANGE_TYPES);
     });
   });
 
@@ -38,17 +38,17 @@ describe('JSONChanges', function () {
         })
         .forEach(function ( transform ) {
           var should = transform.shoulds[ behaviour ];
-          var jsonChanges = new JSONChanges(transform.opts);
+
 
           it('should ' + should, function() {
             switch ( behaviour ) {
 
               case 'diff':
-                expect(jsonChanges.diff(transform.bfore, transform.after)).to.eql(transform.diff);
+                expect(delta.diff(transform.bfore, transform.after)).to.eql(transform.diff);
                 break;
 
               case 'patch':
-                var patch = jsonChanges.patch.bind(jsonChanges, transform.bfore, transform.diff);
+                var patch = delta.patch.bind(delta, transform.bfore, transform.diff);
 
                 if ( transform.errors && transform.errors.patch ) {
                   expect(patch).to.throw(Error);
@@ -58,7 +58,7 @@ describe('JSONChanges', function () {
                 break;
 
               case 'mergePatch':
-                var result = jsonChanges.mergePatch(transform.diffs.baseTheirs, transform.diffs.baseYours);
+                var result = delta.mergePatch(transform.diffs.baseTheirs, transform.diffs.baseYours);
                 expect(result.conflicts).to.deep.have.members(transform.result.conflicts);
                 break;
             }

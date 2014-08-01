@@ -8,18 +8,19 @@ setTimeout(function() {
 
 describe('Delta instances', function () {
 
-  describe('CHANGE_TYPES', function () {
-    var delta = new Delta();
+  describe('Constants', function () {
+    describe('CHANGE_TYPES', function () {
+      var delta = new Delta();
 
-    it('should be exposed on JSONChanges instances', function () {
-      expect(delta.CHANGE_TYPES).to.be.an('object');
-    });
+      it('is exposed on Delta instances', function () {
+        expect(delta.CHANGE_TYPES).to.be.an('object');
+      });
 
-    it('should be read-only', function () {
-      expect(delta.CHANGE_TYPES).to.not.equal(delta.CHANGE_TYPES);
+      it('is read-only', function () {
+        expect(delta.CHANGE_TYPES).to.not.equal(delta.CHANGE_TYPES);
+      });
     });
   });
-
 
   var docs = fs.readdirSync(__dirname + '/describes')
   .filter(function ( filename ) {

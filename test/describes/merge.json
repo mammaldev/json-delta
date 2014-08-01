@@ -361,6 +361,227 @@
           }
         ]
       }
+    },
+    {
+      "description": "Different set of items removed from Array A on each diff",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "REMOVE_ITEMS change where indices is the subset of those indices on corresponding theirs change but not on yours, updated to map to same items after applicaiton of yours"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 3, 5, 8 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3, 7, 9 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 3, 5  ] }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Set of items removed from Array A by theirs is subset of items removed from A by yours",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "theirs change is omitted from the patch"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 3, 7 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3, 7, 9 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Items removed from array A by yours. Items on A reordered by theirs",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "theirs reordering indices updated to take account of items removed by yours"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 8, 7, 6, 0, 1, 2, 5, 4, 3 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3, 4, 6 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 3, 0, 1, 2 ] }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Items removed from array A by both yours and theirs. Items on A reordered by theirs",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "patch removal and reordering that of theirs updated to take account of prior items removal by yours"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 2, 7 ] },
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 7, 5, 0, 4, 1, 6, 3, 2 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3, 4, 6 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3 ] },
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 2, 0, 3, 1 ] }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Items removed from array A by yours. Items added to A by theirs.",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "contains theirs items with indices modified to reflect prior removals by yours"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 0, "item": { "id": "Bogis" } },
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 4, "item": { "id": "Bunse" } },
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 8, "item": { "id": "Bean" } }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 2, 7 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 0, "item": { "id": "Bogis" } },
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 2, "item": { "id": "Bunse" } },
+          { "path": [ "arr" ], "changeType": "INSERT_ITEM", "index": 5, "item": { "id": "Bean" } }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Items reordered on array A by yours. Items removed from A by theirs. Changes to A item descendents by theirs.",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "removed item indices, and paths of changes to A item descendents all updated to reflect prior application of yours"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "arr", 0, "key" ], "changeType": "ADD_PROPERTY", "value": "value" },
+          { "path": [ "arr", 4, "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 1, 2 ] },
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 1, 3 ] }
+        ],
+        "baseYours": [
+          { "path": [ "arr" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 2, 0, 3, 1 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "arr", 0, "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0, 1, 2 ] },
+          { "path": [ "arr", 2, "key" ], "changeType": "ADD_PROPERTY", "value": "value" },
+          { "path": [ "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 4, 3 ] }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Items reordered on array A by yours. Changes both to A's item descendents and objects out of A's scope by theirs.",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "only descendents of A have their paths updated"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "a", "key" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "b", 0, "zero-zero" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 0, "zero-two" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 1, "one-four" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 2, "two-one" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "d", 0, "zero-zero" ], "changeType": "UPDATE_PROPERTY", "value": "value" }
+        ],
+        "baseYours": [
+          { "path": [ "c" ], "changeType": "REORDER_ITEMS", "reordering": [ 4, 2, 0, 3, 1 ] }
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "a", "key" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "b", 0, "zero-zero" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 1, "two-one" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 2, "zero-two" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "c", 4, "one-four" ], "changeType": "UPDATE_PROPERTY", "value": "value" },
+          { "path": [ "d", 0, "zero-zero" ], "changeType": "UPDATE_PROPERTY", "value": "value" }
+        ],
+        "conflicts": []
+      }
+    },
+    {
+      "description": "Array changes on theirs incorrectly ordered to test 'unstable' sort algo - https://es5.github.io/#x15.4.4.11",
+      "methods": {
+        "mergePatch": {
+          "it": {
+            "patch": "REMOVE_ITEMS then REORDER_ITEMS then INSERT_ITEM"
+          }
+        }
+      },
+      "diffs": {
+        "baseTheirs": [
+          { "path": [ "a", "arr" ], "changeType": "INSERT_ITEM", "indices": [ 1 ], "value": {} },
+          { "path": [ "a", "arr" ], "changeType": "REORDER_ITEMS", "indices": [ 0 ] },
+          { "path": [ "a", "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] }
+        ],
+        "baseYours": [
+        ]
+      },
+      "expectation": {
+        "success": true,
+        "patch": [
+          { "path": [ "a", "arr" ], "changeType": "REMOVE_ITEMS", "indices": [ 0 ] },
+          { "path": [ "a", "arr" ], "changeType": "REORDER_ITEMS", "indices": [ 0 ] },
+          { "path": [ "a", "arr" ], "changeType": "INSERT_ITEM", "indices": [ 1 ], "value": {} }
+        ],
+        "conflicts": []
+      }
     }
   ]
 }

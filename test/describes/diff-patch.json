@@ -90,6 +90,20 @@
       "diff": []
     },
     {
+      "description": "one of before/after is null",
+      "methods": {
+        "diff": {
+          "it": "returns a single change - UPDATE_PROPERTY on empty path"
+        }
+      },
+      "before": {
+      },
+      "after": null,
+      "diff": [
+        { "path": [], "changeType": "UPDATE_PROPERTY", "value": null }
+      ]
+    },
+    {
       "description": "ADD_PROPERTY",
       "methods": {
         "diff": {},

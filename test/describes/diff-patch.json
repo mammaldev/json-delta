@@ -929,9 +929,9 @@
       "description": "Array with items removed, inserted, reordered",
       "methods": {
         "diff": {
-          "it": "on single array first REMOVE_ITEM, then REORDER_ITEMS, then INSERT_ITEM",
-          "patch": {}
-        }
+          "it": "on single array first REMOVE_ITEM, then REORDER_ITEMS, then INSERT_ITEM"
+        },
+        "patch": {}
       },
       "opts": {
         "idKeys": [ "id" ]

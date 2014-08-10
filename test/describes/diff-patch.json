@@ -901,7 +901,9 @@
     {
       "description": "Array items reordered",
       "methods": {
-        "diff": {},
+        "diff": {
+          "it": "change.reordering is a map of before items to their indices in after - i.e. reordering = [ 3,.. ] => before[ 0 ] === after[ 3 ]"
+        },
         "patch": {}
       },
       "opts": {
@@ -914,14 +916,14 @@
       ],
       "after": [
         { "id": "Bean" },
-        { "id": "Bunce" },
-        { "id": "Bogis" }
+        { "id": "Bogis" },
+        { "id": "Bunce" }
       ],
       "diff": [
         {
           "path": [],
           "changeType": "REORDER_ITEMS",
-          "reordering": [ 2, 1, 0 ]
+          "reordering": [ 1, 2, 0 ]
         }
       ]
     },
@@ -945,12 +947,12 @@
       "after": [
         { "id": "Bean" },
         { "id": "Fantastic Mr Fox" },
-        { "id": "Bogis" },
-        { "id": "Weasel" }
+        { "id": "Weasel" },
+        { "id": "Bogis" }
       ],
       "diff": [
         { "path": [], "changeType": "REMOVE_ITEMS", "indices": [ 1 ] },
-        { "path": [], "changeType": "REORDER_ITEMS", "reordering": [ 1, 0, 2 ] },
+        { "path": [], "changeType": "REORDER_ITEMS", "reordering": [ 2, 0, 1 ] },
         { "path": [], "changeType": "INSERT_ITEM", "index": 1, "item": { "id": "Fantastic Mr Fox" } }
       ]
     }

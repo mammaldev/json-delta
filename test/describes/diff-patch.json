@@ -2,6 +2,18 @@
   "methods": [ "diff", "patch" ],
   "transforms": [
     {
+      "description": "Args of bad type",
+      "methods": {
+        "diff": {
+          "error": true
+        }
+      },
+      "before": 0,
+      "after": {
+      },
+      "diff": []
+    },
+    {
       "description": "Bad value for changeType in change",
       "methods": {
         "patch": {

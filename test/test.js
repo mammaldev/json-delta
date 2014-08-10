@@ -47,8 +47,13 @@ describe('Delta instances', function () {
 
             switch ( method ) {
               case 'diff':
-                it(itDesc || 'returns expected diff', function () {
-                  expect(delta.diff(transform.before, transform.after)).to.eql(transform.diff);
+                var diff = delta.diff.bind(delta, transform.before, transform.after);
+                it(itDesc || ( expectError ? 'should throw error' : 'returns expected diff' ), function () {
+                  if ( expectError ) {
+                    expect(diff).to.throw(Error);
+                  } else {
+                    expect(diff()).to.eql(transform.diff);
+                  }
                 });
                 break;
 
